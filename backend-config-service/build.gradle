@@ -28,6 +28,7 @@ group 'pl.pja.13868.news'
 version '0.1.0'
 
 repositories {
+    // TODO own repo (cloud | private)
     mavenCentral()
 }
 
@@ -39,7 +40,9 @@ dependencyManagement {
 
 dependencies {
     compile('org.springframework.cloud:spring-cloud-starter-config')
-    compile('org.springframework.cloud:spring-cloud-starter-eureka-server')
+    compile('org.springframework.cloud:spring-cloud-config-server')
+
+    compile('org.springframework.cloud:spring-cloud-starter-eureka')    // config backed by Netflix Eureka
 
     testCompile "org.codehaus.groovy:groovy-all:${groovyVersion}"
     testCompile "junit:junit:${junitVersion}"
@@ -50,7 +53,7 @@ dependencies {
 }
 
 jar {
-    baseName = 'eureka-server'
+    baseName = 'config-server'
 }
 
 task copyJars(dependsOn: jar, type: Copy) {
@@ -62,7 +65,7 @@ task copyDockerFiles(dependsOn: [copyJars], type: Copy) {
     from 'src/docker'
     into "$buildDir/dockerfile"
 
-    String springBootJar = "eureka-server-${project.version}.jar"
+    String springBootJar = "config-server-${project.version}.jar"
     filter(ReplaceTokens, tokens: [springBootJar: springBootJar])
 }
 
@@ -72,10 +75,11 @@ task buildDockerImage(type: DockerBuildImage) {
     dependsOn copyDockerFiles
     inputDir = project.file("$buildDir/dockerfile/Dockerfile").parentFile
     // TODO tag with build number
-    tag = 'kdzido/eurekaserver:latest'
+    tag = 'kdzido/configservice:latest'
 }
 
 // TODO pushDockerImage ??
 
 //build.dependsOn buildImage
+
 
