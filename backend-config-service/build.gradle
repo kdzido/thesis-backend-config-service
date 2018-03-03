@@ -25,7 +25,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 group 'pl.pja.13868.news'
-version '0.1.0'
+version '0.1.1'
 
 repositories {
     // TODO own repo (cloud | private)
@@ -53,7 +53,7 @@ dependencies {
 }
 
 jar {
-    baseName = 'config-server'
+    baseName = 'config-service'
 }
 
 task copyJars(dependsOn: jar, type: Copy) {
@@ -65,7 +65,7 @@ task copyDockerFiles(dependsOn: [copyJars], type: Copy) {
     from 'src/docker'
     into "$buildDir/dockerfile"
 
-    String springBootJar = "config-server-${project.version}.jar"
+    String springBootJar = "config-service-${project.version}.jar"
     filter(ReplaceTokens, tokens: [springBootJar: springBootJar])
 }
 
@@ -75,7 +75,7 @@ task buildDockerImage(type: DockerBuildImage) {
     dependsOn copyDockerFiles
     inputDir = project.file("$buildDir/dockerfile/Dockerfile").parentFile
     // TODO tag with build number
-    tag = 'kdzido/configservice:latest'
+    tag = 'kdzido/thesis-configservice:latest'
 }
 
 // TODO pushDockerImage ??

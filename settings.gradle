@@ -6,4 +6,5 @@ include 'news-mono-integration-tests'
 
 include 'backend-eureka-service'
 include 'backend-config-service'
+include 'backend-sample-service'
 
