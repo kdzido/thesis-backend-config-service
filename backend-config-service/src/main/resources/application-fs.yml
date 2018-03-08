@@ -1,0 +1,17 @@
+server:
+   port: 8888
+spring:
+  profiles:
+    active: native
+  cloud:
+     config:
+       server:
+           native:
+              searchLocations: classpath:config/sampleservice,classpath:config/todoservice
+
+# logging
+logging:
+  level:
+    com.netflix: WARN
+    org.springframework.web: WARN
+    com.kdzido.thesis: DEBUG

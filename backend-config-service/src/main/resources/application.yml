@@ -1,17 +1,20 @@
-server:
-   port: 8888
+server.port: 8888
+
+# TODO remove
+management.security.enabled: false
+
 spring:
-  profiles:
-    active: native
   cloud:
-     config:
-       server:
-           native:
-              searchLocations: classpath:config/sampleservice,classpath:config/todoservice
+    config:
+      discovery.enabled: true
+      server:
+        encrypt.enabled: false
+        git:
+          uri: https://github.com/kdzido/thesis-config/
+          searchPaths: sampleservice,todoservice
 
 # logging
-logging:
-  level:
-    com.netflix: WARN
-    org.springframework.web: WARN
-    com.kdzido.thesis: DEBUG
+logging.level:
+  com.netflix: WARN
+  org.springframework.web: WARN
+  com.kdzido.thesis: DEBUG
