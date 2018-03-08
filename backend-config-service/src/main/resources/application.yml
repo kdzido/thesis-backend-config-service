@@ -6,6 +6,7 @@ management.security.enabled: false
 spring:
   cloud:
     config:
+      # discovery needed?
       discovery.enabled: true
       server:
         encrypt.enabled: false
