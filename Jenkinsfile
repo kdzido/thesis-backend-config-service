@@ -12,7 +12,7 @@ pipeline {
         }
         stage('Acceptance Stage') {
             steps {
-                sh './gradlew :news-monolith-acceptance-test:test'
+                sh './gradlew :news-mono-acceptance-test:test'
             }
         }
     }
