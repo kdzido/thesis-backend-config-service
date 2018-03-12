@@ -3,3 +3,5 @@ info.component: Config Server
 spring:
   application:
     name: configservice
+
+spring.cloud.config.server.encrypt.enabled: false   # serving encrypted properties

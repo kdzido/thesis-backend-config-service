@@ -9,7 +9,6 @@ spring:
       # discovery needed?
       discovery.enabled: true
       server:
-        encrypt.enabled: false
         git:
           uri: https://github.com/kdzido/thesis-config/
           searchPaths: sampleservice,todoservice
