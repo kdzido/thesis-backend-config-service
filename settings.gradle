@@ -1,10 +1,4 @@
-rootProject.name = 'news-monolith'
+rootProject.name = 'backend-config-service'
 
-include 'news-mono-acceptance-test'
-include 'backend-news-api-gateway-web'
-include 'news-mono-integration-tests'
-
-include 'backend-eureka-service'
 include 'backend-config-service'
-include 'backend-sample-service'
 
