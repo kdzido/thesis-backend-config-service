@@ -1,4 +1,4 @@
-rootProject.name = 'backend-config-service'
+rootProject.name = 'thesis-backend-config-service'
 
 include 'backend-config-service'
 
