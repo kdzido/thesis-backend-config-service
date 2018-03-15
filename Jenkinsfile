@@ -11,9 +11,9 @@ pipeline {
             }
         }
         stage('Acceptance Stage') {
-//            steps {
-//                sh './gradlew :acceptance-test:test'
-//            }
+            steps {
+                sh './gradlew build'
+            }
         }
     }
 
