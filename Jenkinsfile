@@ -7,12 +7,12 @@ pipeline {
     stages {
         stage('Commit Stage') {
             steps {
-                sh './gradlew build'
+                sh './gradlew clean build'
             }
         }
         stage('Acceptance Stage') {
             steps {
-                sh './gradlew build'
+                sh './gradlew clean build'
             }
         }
     }
