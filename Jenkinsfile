@@ -7,12 +7,12 @@ pipeline {
     stages {
         stage('Commit Stage') {
             steps {
-                sh './gradlew check'
+                sh './gradlew build'
             }
         }
         stage('Acceptance Stage') {
             steps {
-                sh './gradlew :news-mono-acceptance-test:test'
+//                sh './gradlew :acceptance-test:test'
             }
         }
     }
