@@ -3,6 +3,7 @@ pipeline {
 //    {
 //        docker 'maven-build-slave-0.1:latest'
 //    }
+//
 
     stages {
         stage('Commit Stage') {
