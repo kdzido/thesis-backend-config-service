@@ -52,8 +52,22 @@ dependencies {
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
+task createBuildInfoFile << {
+    def buildInfo = new File("$buildDir/build-info.properties")
+    def properties = new Properties()
+    properties.setProperty("version", project.version.toString())
+//    properties.setProperty("timestamp", project.buildTimestamp) // TODO timestamp
+    properties.store(buildInfo.newWriter(), null)
+}
+
 jar {
+    dependsOn createBuildInfoFile
     baseName = 'config-service'
+
+    from(buildDir) {
+        include 'build-info.properties'
+        into('META-INF/')
+    }
 }
 
 task copyJars(dependsOn: jar, type: Copy) {
@@ -74,12 +88,17 @@ task copyDockerFiles(dependsOn: [copyJars], type: Copy) {
 task buildDockerImage(type: DockerBuildImage) {
     dependsOn copyDockerFiles
     inputDir = project.file("$buildDir/dockerfile/Dockerfile").parentFile
+    // TODO include build-nfo.properties
     // TODO tag with build number
     tag = 'kdzido/thesis-configservice:latest'
 }
+
+// TODO publish to artifactory
 
 // TODO pushDockerImage ??
 
 //build.dependsOn buildImage
 
+artifacts {
 
+}
