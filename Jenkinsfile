@@ -1,14 +1,14 @@
 pipeline {
-    agent  any
-//    {
-//        docker 'maven-build-slave-0.1:latest'
-//    }
-//
+    agent { node { label 'docker' } }
+
+    environment {
+        PIPELINE_BUILD_ID = "${BUILD_TAG}"
+    }
 
     stages {
         stage('Commit Stage') {
             steps {
-                sh './gradlew clean build'
+                sh './gradlew clean build buildDockerImage'
             }
         }
         stage('Acceptance Stage') {
