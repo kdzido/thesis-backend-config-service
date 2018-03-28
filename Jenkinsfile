@@ -21,7 +21,7 @@ pipeline {
                 sh './gradlew clean build buildDockerImage'
                 sh '''\
                 docker login -u $DOCKERHUB_CREDS_USR -p $DOCKERHUB_CREDS_PSW
-                docker push qu4rk/thesis-configervice:$PIPELINE_BUILD_ID
+                docker push qu4rk/thesis-configservice:$PIPELINE_BUILD_ID
                 '''
             }
         }
