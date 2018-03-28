@@ -25,7 +25,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 group 'pl.pja.13868.news'
-version '0.1.1'
+version '0.1.2'
 
 repositories {
     // TODO own repo (cloud | private)
@@ -89,8 +89,7 @@ task buildDockerImage(type: DockerBuildImage) {
     // TODO include build-info.properties
 
     String dockerTag = System.env.PIPELINE_BUILD_ID ?: "snapshot"
-    tag = "kdzido/thesis-configservice:${dockerTag}"
+    tag = "qu4rk/thesis-configservice:${dockerTag}"
 }
 
 // TODO publish to artifactory
-// TODO pushDockerImage ??
