@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+# Commit
+  unit:
+    image: openjdk:8u162-jdk
+    volumes:
+      - .:/appsrc
+      - ./rootGradle:/root/.gradle
+    working_dir: /appsrc
+    command: bash -c "./gradlew clean build copyDockerFiles"
+
+  app:
+    build:
+      context: ./backend-config-service/build/dockerfile/
+    image: thesis-configservice:snapshot
+
+# Staging
+#  eurekapeer1:
+#    image: thesis-eurekaservice:snapshot
+#    environment:
+#      - PROFILE=peer1
+#    ports:
+#      - "8701:8761"
+#
+#  eurekapeer2:
+#    image: thesis-eurekaservice:snapshot
+#    environment:
+#      - PROFILE=peer2
+#    ports:
+#      - "8702:8761"
+#
+#  staging:
+#    image: openjdk:8u162-jdk
+#    depends_on:
+#      - eurekapeer1
+#      - eurekapeer2
+#    volumes:
+#      - .:/appsrc
+#      - ./rootGradle:/root/.gradle
+#    environment:
+#      - EUREKASERVICE_URI_1=http://eurekapeer1:8761/eureka
+#      - EUREKASERVICE_URI_2=http://eurekapeer2:8761/eureka
+#    working_dir: /appsrc
+#    command: bash -c "ping -c 1 eurekapeer1 && ping -c 1 eurekapeer2 && ./gradlew integTest"
