@@ -36,6 +36,7 @@ services:
       - eurekapeer1
       - eurekapeer2
     environment:
+      - EUREKASERVICE_PORT=8761
       - EUREKASERVICE_URI=http://eurekapeer1:8761/eureka,http://eurekapeer2:8761/eureka
     ports:
       - "8888:8888"
