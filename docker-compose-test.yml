@@ -30,8 +30,11 @@ services:
     ports:
       - "8702:8761"
 
- configservice:
+  configservice:
     image: thesis-configservice:snapshot
+    depends_on:
+      - eurekapeer1
+      - eurekapeer2
     environment:
       - EUREKASERVICE_URI=http://eurekapeer1:8761/eureka,http://eurekapeer2:8761/eureka
     ports:
