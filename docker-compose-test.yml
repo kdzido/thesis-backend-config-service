@@ -16,30 +16,40 @@ services:
     image: thesis-configservice:snapshot
 
 # Staging
-#  eurekapeer1:
-#    image: thesis-eurekaservice:snapshot
-#    environment:
-#      - PROFILE=peer1
-#    ports:
-#      - "8701:8761"
-#
-#  eurekapeer2:
-#    image: thesis-eurekaservice:snapshot
-#    environment:
-#      - PROFILE=peer2
-#    ports:
-#      - "8702:8761"
-#
-#  staging:
-#    image: openjdk:8u162-jdk
-#    depends_on:
-#      - eurekapeer1
-#      - eurekapeer2
-#    volumes:
-#      - .:/appsrc
-#      - ./rootGradle:/root/.gradle
-#    environment:
-#      - EUREKASERVICE_URI_1=http://eurekapeer1:8761/eureka
-#      - EUREKASERVICE_URI_2=http://eurekapeer2:8761/eureka
-#    working_dir: /appsrc
-#    command: bash -c "ping -c 1 eurekapeer1 && ping -c 1 eurekapeer2 && ./gradlew integTest"
+  eurekapeer1:
+    image: thesis-eurekaservice:snapshot
+    environment:
+      - PROFILE=peer1
+    ports:
+      - "8701:8761"
+
+  eurekapeer2:
+    image: thesis-eurekaservice:snapshot
+    environment:
+      - PROFILE=peer2
+    ports:
+      - "8702:8761"
+
+ configservice:
+    image: thesis-configservice:snapshot
+    environment:
+      - EUREKASERVICE_URI=http://eurekapeer1:8761/eureka,http://eurekapeer2:8761/eureka
+    ports:
+      - "8888:8888"
+
+  staging:
+    image: openjdk:8u162-jdk
+    depends_on:
+      - eurekapeer1
+      - eurekapeer2
+      - configservice
+    volumes:
+      - .:/appsrc
+      - ./rootGradle:/root/.gradle
+    environment:
+      - EUREKASERVICE_URI_1=http://eurekapeer1:8761/eureka
+      - EUREKASERVICE_URI_2=http://eurekapeer2:8761/eureka
+      - EUREKASERVICE_PORT="8761"
+      - ENCRYPT_KEY="COMMON_SYMMETRIC_KEY"
+    working_dir: /appsrc
+    command: bash -c "ping -c 1 eurekapeer1 && ping -c 1 eurekapeer2 && ping -c 1 configservice && ./gradlew build"
