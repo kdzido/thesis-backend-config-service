@@ -17,14 +17,14 @@ services:
 
 # Staging
   eurekapeer1:
-    image: thesis-eurekaservice:latest  # TODO fixed?
+    image: localhost:5000/thesis-eurekaservice:latest  # TODO fixed?
     environment:
       - PROFILE=peer1
     ports:
       - "8701:8761"
 
   eurekapeer2:
-    image: thesis-eurekaservice:latest  # TODO fixed?
+    image: localhost:5000/thesis-eurekaservice:latest  # TODO fixed?
     environment:
       - PROFILE=peer2
     ports:
