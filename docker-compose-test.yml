@@ -17,18 +17,21 @@ services:
 
 # Staging
   eurekapeer1:
-    image: localhost:5000/thesis-eurekaservice:latest  # TODO fixed?
+    image: thesis-eurekaservice:snapshot  # TODO fixed?
+#    image: localhost:5000/thesis-eurekaservice:latest  # TODO fixed?
     environment:
       - PROFILE=peer1
     ports:
       - "8701:8761"
 
   eurekapeer2:
-    image: localhost:5000/thesis-eurekaservice:latest  # TODO fixed?
+    image: thesis-eurekaservice:snapshot  # TODO fixed?
+#    image: localhost:5000/thesis-eurekaservice:latest  # TODO fixed?
     environment:
       - PROFILE=peer2
     ports:
       - "8702:8761"
+
 
   configservice:
     image: thesis-configservice:snapshot
@@ -36,8 +39,9 @@ services:
       - eurekapeer1
       - eurekapeer2
     environment:
-      - EUREKASERVICE_PORT=8761
-      - EUREKASERVICE_URI=http://eurekapeer1:8761/eureka,http://eurekapeer2:8761/eureka
+       EUREKASERVICE_URI: "http://eurekapeer1:8761/eureka/,http://eurekapeer2:8761/eureka/"
+       EUREKASERVICE_PORT: "8761"
+       ENCRYPT_KEY: "COMMON_SYMMETRIC_KEY"
     ports:
       - "8808:8888"
 
