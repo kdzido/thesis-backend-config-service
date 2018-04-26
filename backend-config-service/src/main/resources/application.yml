@@ -1,8 +1,5 @@
 server.port: 8888
 
-# TODO remove
-management.security.enabled: false
-
 spring:
   cloud:
     config:
