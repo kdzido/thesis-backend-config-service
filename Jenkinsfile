@@ -26,7 +26,6 @@ pipeline {
 //                    sh 'docker-compose up -d eurekapeer1'
 //                    sh 'docker-compose up -d eurekapeer2'
                     sh 'docker-compose run --rm staging'
-                    sleep 3600
                 }
             }
         }
