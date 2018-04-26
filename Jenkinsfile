@@ -26,19 +26,18 @@ pipeline {
 //                    sh 'docker-compose up -d eurekapeer1'
 //                    sh 'docker-compose up -d eurekapeer2'
                     sh 'docker-compose run --rm staging'
-                    sleep 3600
                 }
             }
         }
 
-//        stage("Publish") { // Local Docker registry
-//            steps {
-//                sh "docker tag thesis-configservice:snapshot localhost:5000/thesis-configservice"
-//                sh "docker tag thesis-configservice:snapshot localhost:5000/thesis-configervice:${env.BUILD_NUMBER}"
-//                sh "docker push localhost:5000/thesis-configservice"
-//                sh "docker push localhost:5000/thesis-configservice:${env.BUILD_NUMBER}"
-//            }
-//        }
+        stage("Publish") { // Local Docker registry
+            steps {
+                sh "docker tag thesis-configservice:snapshot localhost:5000/thesis-configservice"
+                sh "docker tag thesis-configservice:snapshot localhost:5000/thesis-configervice:${env.BUILD_NUMBER}"
+                sh "docker push localhost:5000/thesis-configservice"
+                sh "docker push localhost:5000/thesis-configservice:${env.BUILD_NUMBER}"
+            }
+        }
 
 //        stage("Prod-like") {
 //            steps {
