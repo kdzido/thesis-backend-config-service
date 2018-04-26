@@ -25,11 +25,28 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 group 'pl.pja.13868.news'
-version '0.2.1'
+version '0.3.0'
 
 repositories {
+    mavenLocal()
     // TODO own repo (cloud | private)
     mavenCentral()
+}
+
+configurations {
+    integTestCompile.extendsFrom testCompile
+    integTestRuntime.extendsFrom testRuntime
+}
+
+sourceSets {
+    integTest {
+        java {
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+            srcDir file('src/integTest/java')
+            srcDir file('src/integTest/groovy')
+        }
+    }
 }
 
 dependencyManagement {
@@ -50,18 +67,37 @@ dependencies {
     testCompile("cglib:cglib-nodep:${cglibVersion}")
 
     testCompile('org.springframework.boot:spring-boot-starter-test')
+
+    integTestCompile sourceSets.main.output
+    integTestCompile "cglib:cglib-nodep:${cglibVersion}"
+    integTestCompile "org.codehaus.groovy:groovy-all:${groovyVersion}"
+    integTestCompile "org.spockframework:spock-core:${spockVersion}"
+    integTestCompile "io.rest-assured:rest-assured:${restAssuredVersion}"
+    integTestCompile "org.awaitility:awaitility-groovy:${awaitilityVersion}"
 }
 
-task createBuildInfoFile << {
-    def buildInfo = new File("$buildDir/build-info.properties")
-    def properties = new Properties()
-    properties.setProperty("version", project.version.toString())
-//    properties.setProperty("timestamp", project.buildTimestamp) // TODO timestamp
-    properties.store(buildInfo.newWriter(), null)
+task integTest(type: Test) {
+    testClassesDirs = sourceSets.integTest.output.classesDirs
+    classpath = sourceSets.integTest.runtimeClasspath
+    description ='Integration tests'
+    group = 'verification'
 }
+
+// TODO uncomment?
+//integTest.mustRunAfter test
+
+
+// TODO uncomment
+//task createBuildInfoFile << {
+//    def buildInfo = new File("$buildDir/build-info.properties")
+//    def properties = new Properties()
+//    properties.setProperty("version", project.version.toString())
+////    properties.setProperty("timestamp", project.buildTimestamp) // TODO timestamp
+//    properties.store(buildInfo.newWriter(), null)
+//}
 
 jar {
-    dependsOn createBuildInfoFile
+//    dependsOn createBuildInfoFile
     baseName = 'config-service'
 
     from(buildDir) {
