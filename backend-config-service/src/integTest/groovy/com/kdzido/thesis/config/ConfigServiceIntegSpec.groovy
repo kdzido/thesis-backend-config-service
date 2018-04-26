@@ -38,6 +38,10 @@ class ConfigServiceIntegSpec extends Specification {
         System.getenv("EUREKASERVICE_URI_1") | System.getenv("EUREKASERVICE_URI_2")
     }
 
+    // TODO test config service
+    // TODO test config service
+    // TODO test config service
+
     static getEurekaAppsResponse(eurekaBaseUri) {
         def response = RestAssured.given().when()
                 .accept(ContentType.JSON)

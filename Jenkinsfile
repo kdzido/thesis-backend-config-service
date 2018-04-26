@@ -33,7 +33,7 @@ pipeline {
         stage("Publish") { // Local Docker registry
             steps {
                 sh "docker tag thesis-configservice:snapshot localhost:5000/thesis-configservice"
-                sh "docker tag thesis-configservice:snapshot localhost:5000/thesis-configervice:${env.BUILD_NUMBER}"
+                sh "docker tag thesis-configservice:snapshot localhost:5000/thesis-configservice:${env.BUILD_NUMBER}"
                 sh "docker push localhost:5000/thesis-configservice"
                 sh "docker push localhost:5000/thesis-configservice:${env.BUILD_NUMBER}"
             }
