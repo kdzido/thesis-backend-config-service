@@ -52,19 +52,19 @@ pipeline {
                 // TODO smoke test or rollback!!
             }
         }
-//        stage("Prod") {
-//            steps {
-//                withEnv([
-//                        "DOCKER_TLS_VERIFY=1",
-//                        "DOCKER_HOST=tcp://${env.PROD_IP}:2376",
-//                        "DOCKER_CERT_PATH=/machines/${env.PROD_NAME}"]) {
-//                    sh "docker service update --image localhost:5000/thesis-configservice:${env.BUILD_NUMBER} configservice"
-//                }
-//                // TODO smoke test or rollback!!
-//                // TODO smoke test or rollback!!
-//                // TODO smoke test or rollback!!
-//            }
-//        }
+        stage("Prod") {
+            steps {
+                withEnv([
+                        "DOCKER_TLS_VERIFY=1",
+                        "DOCKER_HOST=tcp://${env.PROD_IP}:2376",
+                        "DOCKER_CERT_PATH=/machines/${env.PROD_NAME}"]) {
+                    sh "docker service update --image localhost:5000/thesis-configservice:${env.BUILD_NUMBER} configservice"
+                }
+                // TODO smoke test or rollback!!
+                // TODO smoke test or rollback!!
+                // TODO smoke test or rollback!!
+            }
+        }
     }
 
     post {

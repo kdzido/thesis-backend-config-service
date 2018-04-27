@@ -63,6 +63,7 @@ dependencies {
     compile('org.springframework.cloud:spring-cloud-starter-eureka')    // config backed by Netflix Eureka
 
     testCompile "org.codehaus.groovy:groovy-all:${groovyVersion}"
+    testCompile "org.codehaus.groovy.modules.http-builder:http-builder:${httpBuilderVersion}"
     testCompile "junit:junit:${junitVersion}"
     testCompile "org.spockframework:spock-core:${spockVersion}"
     testCompile("cglib:cglib-nodep:${cglibVersion}")

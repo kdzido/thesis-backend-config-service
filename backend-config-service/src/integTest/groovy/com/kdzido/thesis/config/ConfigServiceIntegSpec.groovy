@@ -1,7 +1,6 @@
 package com.kdzido.thesis.config
 
-import io.restassured.RestAssured
-import io.restassured.http.ContentType
+import groovyx.net.http.RESTClient
 import spock.lang.Specification
 import spock.lang.Stepwise
 import spock.lang.Unroll
@@ -16,68 +15,71 @@ import static org.awaitility.Awaitility.await
 @Stepwise
 class ConfigServiceIntegSpec extends Specification {
 
-    @Unroll
-    def "that eureka peers are up: #peer1, #peer2"() { // readable fail
+    final static EUREKASERVICE_URI_1 = System.getenv("EUREKASERVICE_URI_1")
+    final static EUREKASERVICE_URI_2 = System.getenv("EUREKASERVICE_URI_2")
+
+    final static CONFIGSERVICE_URI = System.getenv("CONFIGSERVICE_URI")
+
+//    def configServiceClient = new RESTClient("http://192.168.99.103:8888")
+    def configServiceClient = new RESTClient("$CONFIGSERVICE_URI")
+
+//    def eurekapeer1Client = new RESTClient("http://192.168.99.103:8761/eureka").with {
+        def eurekapeer1Client = new RESTClient("$EUREKASERVICE_URI_1").with {
+        setHeaders(Accept: 'application/json')
+        it
+    }
+
+//    def eurekapeer2Client = new RESTClient("http://192.168.99.103:8762/eureka").with {
+    def eurekapeer2Client = new RESTClient("$EUREKASERVICE_URI_2").with {
+        setHeaders(Accept: 'application/json')
+        it
+    }
+
+    def "that config service is registered in Eureka peers"() { // readable fail
         expect:
-        await().atMost(2, TimeUnit.MINUTES).until({ is200(peer1) })
-        await().atMost(2, TimeUnit.MINUTES).until({ is200(peer2) })
+        await().atMost(2, TimeUnit.MINUTES).until({
+            try {
+                def resp = eurekapeer1Client.get(path: "/eureka/apps")
+                resp.status == 200 &&
+                    resp.headers.'Content-Type' == "application/json" &&
+                    resp.data.applications.application[0].name == "CONFIGSERVICE"
+            } catch (e) {
+                return false
+            }
+        })
+
+        and:
+        await().atMost(2, TimeUnit.MINUTES).until({
+            try {
+                def resp = eurekapeer2Client.get(path: "/eureka/apps")
+                resp.status == 200 &&
+                        resp.headers.'Content-Type' == "application/json" &&
+                        resp.data.applications.application[0].name == "CONFIGSERVICE"
+            } catch (e) {
+                return false
+            }
+        })
+    }
+
+    @Unroll
+    def "that config service returns configuration of #serviceName / #serviceProfile"() { // readable fail
+        expect:
+        await().atMost(2, TimeUnit.MINUTES).until({
+            try {
+                def resp = configServiceClient.get(path: "/$serviceName/$serviceProfile")
+                resp.status == 200 &&
+                    resp.data.name == "todoservice" &&
+                    resp.data.profiles == ["$serviceProfile"] &&
+                    resp.data.propertySources[0].name == "https://github.com/kdzido/thesis-config/todoservice/todoservice.yml" &&
+                    resp.data.propertySources[0].source.'todo.property' == "This is a Git-backed test property for the todoservice"
+            } catch (e) {
+                return false
+            }
+        })
 
         where:
-        peer1                                | peer2
-        System.getenv("EUREKASERVICE_URI_1") | System.getenv("EUREKASERVICE_URI_2")
-    }
-
-    @Unroll
-    def "that config service is registered in: #peer1, #peer2)"() { // readable fail
-        expect:
-        await().atMost(3, TimeUnit.MINUTES).until({ isConfigRegistered(peer1) })
-        await().atMost(3, TimeUnit.MINUTES).until({ isConfigRegistered(peer2) })
-
-        where:
-        peer1                                | peer2
-        System.getenv("EUREKASERVICE_URI_1") | System.getenv("EUREKASERVICE_URI_2")
-    }
-
-    // TODO test config service
-    // TODO test config service
-    // TODO test config service
-
-    static getEurekaAppsResponse(eurekaBaseUri) {
-        def response = RestAssured.given().when()
-                .accept(ContentType.JSON)
-                .get("$eurekaBaseUri/apps")
-                .then()
-                .extract().response()
-        return response
-    }
-
-    static getEurekaAppsList(eurekaBaseUri) {
-        return RestAssured.given().when()
-                .accept(ContentType.JSON)
-                .get("$eurekaBaseUri/apps")
-                .then()
-                .extract()
-                .response()
-                .body().jsonPath().get("applications.application.name")
-    }
-
-    static is200(eurekaBaseUri) {
-        try {
-            def response = getEurekaAppsResponse(eurekaBaseUri)
-            return response.statusCode() == 200
-        } catch (e) {
-            return false
-        }
-    }
-
-    static isConfigRegistered(eurekaBaseUri) {
-        try {
-            def response = getEurekaAppsResponse(eurekaBaseUri)
-            return response.statusCode() == 200 &&
-                    response.body().jsonPath().get("applications.application.name").contains("CONFIGSERVICE")
-        } catch (e) {
-            return false
-        }
+        serviceName   | serviceProfile
+        "todoservice" | "default"
     }
 
 }
