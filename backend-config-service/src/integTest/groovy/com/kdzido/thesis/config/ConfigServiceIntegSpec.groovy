@@ -18,25 +18,19 @@ class ConfigServiceIntegSpec extends Specification {
 
     final static EUREKASERVICE_URI_1 = System.getenv("EUREKASERVICE_URI_1")
     final static EUREKASERVICE_URI_2 = System.getenv("EUREKASERVICE_URI_2")
-
     final static CONFIGSERVICE_URI = System.getenv("CONFIGSERVICE_URI")
 
-//    def configServiceClient = new RESTClient("http://192.168.99.103:8888")
     def configServiceClient = new RESTClient("$CONFIGSERVICE_URI")
 
-//    def eurekapeer1Client = new RESTClient("http://192.168.99.103:8761/eureka").with {
-        def eurekapeer1Client = new RESTClient("$EUREKASERVICE_URI_1").with {
+    def eurekapeer1Client = new RESTClient("$EUREKASERVICE_URI_1").with {
         setHeaders(Accept: 'application/json')
         it
     }
-
-//    def eurekapeer2Client = new RESTClient("http://192.168.99.103:8762/eureka").with {
     def eurekapeer2Client = new RESTClient("$EUREKASERVICE_URI_2").with {
         setHeaders(Accept: 'application/json')
         it
     }
 
-    @Ignore
     def "that config service is registered in Eureka peers"() { // readable fail
         expect:
         await().atMost(2, TimeUnit.MINUTES).until({

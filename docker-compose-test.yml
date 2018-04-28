@@ -55,9 +55,10 @@ services:
       - .:/appsrc
       - ./rootGradle:/root/.gradle
     environment:
-      - EUREKASERVICE_URI_1=http://eurekapeer1:8761/eureka
-      - EUREKASERVICE_URI_2=http://eurekapeer2:8761/eureka
+      - EUREKASERVICE_URI_1=http://eurekapeer1:8761
+      - EUREKASERVICE_URI_2=http://eurekapeer2:8761
       - EUREKASERVICE_PORT=8761
+      - CONFIGSERVICE_URI=http://configservice:8888
       - ENCRYPT_KEY="COMMON_SYMMETRIC_KEY"
     working_dir: /appsrc
     command: bash -c "ping -c 1 eurekapeer1 && ping -c 1 eurekapeer2 && ping -c 1 configservice && ./gradlew integTest"
