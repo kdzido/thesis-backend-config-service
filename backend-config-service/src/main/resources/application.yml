@@ -14,7 +14,6 @@ eureka:
   instance:
 #    preferIpAddress: true
     hostName: configservice
-    ip-address: 10.1.2.3
 #    ip-address: ${SERVICE_VIP}    # -Deureka.instance.ip-address=$DOCKER_IP
   client:
     registerWithEureka: true
