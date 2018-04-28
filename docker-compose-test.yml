@@ -22,7 +22,7 @@ services:
     environment:
       - PROFILE=peer1
     ports:
-      - "8701:8761"
+      - "7761:8761"
 
   eurekapeer2:
     image: thesis-eurekaservice:snapshot  # TODO fixed?
@@ -30,7 +30,7 @@ services:
     environment:
       - PROFILE=peer2
     ports:
-      - "8702:8761"
+      - "7762:8761"
 
 
   configservice:
@@ -44,7 +44,7 @@ services:
        ENCRYPT_KEY: "COMMON_SYMMETRIC_KEY"
 #       SERVICE_HOSTNAME: "configservice"
     ports:
-      - "8808:8888"
+      - "7888:8888"
 
   staging:
     image: openjdk:8u162-jdk

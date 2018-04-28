@@ -121,13 +121,4 @@ task copyDockerFiles(dependsOn: [copyJars], type: Copy) {
     filter(ReplaceTokens, tokens: [springBootJar: springBootJar])
 }
 
-task buildDockerImage(type: DockerBuildImage) {
-    dependsOn copyDockerFiles
-    inputDir = project.file("$buildDir/dockerfile/Dockerfile").parentFile
-    // TODO include build-info.properties
-
-    String dockerTag = System.env.PIPELINE_BUILD_ID ?: "snapshot"
-    tag = "qu4rk/thesis-configservice:${dockerTag}"
-}
-
 // TODO publish to artifactory

@@ -1,6 +1,7 @@
 package com.kdzido.thesis.config
 
 import groovyx.net.http.RESTClient
+import org.springframework.http.MediaType
 import spock.lang.Specification
 import spock.lang.Stepwise
 import spock.lang.Unroll
@@ -22,11 +23,11 @@ class ConfigServiceIntegSpec extends Specification {
     def configServiceClient = new RESTClient("$CONFIGSERVICE_URI")
 
     def eurekapeer1Client = new RESTClient("$EUREKASERVICE_URI_1").with {
-        setHeaders(Accept: 'application/json')
+        setHeaders(Accept: MediaType.APPLICATION_JSON_VALUE)
         it
     }
     def eurekapeer2Client = new RESTClient("$EUREKASERVICE_URI_2").with {
-        setHeaders(Accept: 'application/json')
+        setHeaders(Accept: MediaType.APPLICATION_JSON_VALUE)
         it
     }
 
@@ -36,7 +37,7 @@ class ConfigServiceIntegSpec extends Specification {
             try {
                 def resp = eurekapeer1Client.get(path: "/eureka/apps")
                 resp.status == 200 &&
-                    resp.headers.'Content-Type' == "application/json" &&
+                    resp.headers.'Content-Type'.contains(MediaType.APPLICATION_JSON_VALUE) &&
                     resp.data.applications.application.any {it.name == "CONFIGSERVICE" }
             } catch (e) {
                 return false
@@ -48,7 +49,7 @@ class ConfigServiceIntegSpec extends Specification {
             try {
                 def resp = eurekapeer2Client.get(path: "/eureka/apps")
                 resp.status == 200 &&
-                        resp.headers.'Content-Type' == "application/json" &&
+                        resp.headers.'Content-Type'.contains(MediaType.APPLICATION_JSON_VALUE) &&
                         resp.data.applications.application.any {it.name == "CONFIGSERVICE" }
             } catch (e) {
                 return false
@@ -63,6 +64,7 @@ class ConfigServiceIntegSpec extends Specification {
             try {
                 def resp = configServiceClient.get(path: "/$serviceName/$serviceProfile")
                 resp.status == 200 &&
+                    resp.headers.'Content-Type'.contains(MediaType.APPLICATION_JSON_VALUE) && // WRONG??
                     resp.data.name == "todoservice" &&
                     resp.data.profiles == ["$serviceProfile"] &&
                     resp.data.propertySources.any {
@@ -78,5 +80,11 @@ class ConfigServiceIntegSpec extends Specification {
         serviceName   | serviceProfile
         "todoservice" | "default"
     }
+
+
+    // TODO test encryption / decryption endpoints
+    // TODO test encryption / decryption endpoints
+    // TODO test encryption / decryption endpoints
+
 
 }
