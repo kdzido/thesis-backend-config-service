@@ -1,6 +1,7 @@
 package com.kdzido.thesis.config
 
 import groovyx.net.http.RESTClient
+import spock.lang.Ignore
 import spock.lang.Specification
 import spock.lang.Stepwise
 import spock.lang.Unroll
@@ -35,6 +36,7 @@ class ConfigServiceIntegSpec extends Specification {
         it
     }
 
+    @Ignore
     def "that config service is registered in Eureka peers"() { // readable fail
         expect:
         await().atMost(2, TimeUnit.MINUTES).until({
