@@ -10,6 +10,18 @@ spring:
           uri: https://github.com/kdzido/thesis-config/
           searchPaths: sampleservice,todoservice
 
+eureka:
+  instance:
+    preferIpAddress: true
+    hostname: configservice
+    virtual-host-name: configservicev
+  client:
+    registerWithEureka: true
+    fetchRegistry: false
+    serviceUrl:
+        defaultZone: http://localhost:8761/eureka/
+
+
 # logging
 logging.level:
   com.netflix: WARN
