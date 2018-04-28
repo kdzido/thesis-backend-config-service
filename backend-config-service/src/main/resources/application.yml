@@ -13,8 +13,9 @@ spring:
 eureka:
   instance:
     preferIpAddress: true
-    hostname: configservice
-    virtual-host-name: configservicev
+    hostName: configservice
+#    hostname: configservice
+#    virtual-host-name: configservicev
   client:
     registerWithEureka: true
     fetchRegistry: false
