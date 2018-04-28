@@ -14,8 +14,6 @@ eureka:
   instance:
 #    preferIpAddress: true
     hostName: configservice
-    hostname: configservice
-#    virtual-host-name: configservicev
   client:
     registerWithEureka: true
     fetchRegistry: false
