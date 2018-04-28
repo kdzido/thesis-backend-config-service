@@ -30,7 +30,7 @@ class ConfigServiceIntegSpec extends Specification {
         it
     }
 
-    def "that config service is registered in Eureka peers"() { // readable fail
+    def "that config service is registered in Eureka peers"() {
         expect:
         await().atMost(2, TimeUnit.MINUTES).until({
             try {
