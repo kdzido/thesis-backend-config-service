@@ -13,7 +13,7 @@ spring:
 eureka:
   instance:
     preferIpAddress: true
-    hostName: ${SERVICE_HOSTNAME}
+    hostName: configservice
 #    ip-address: ${SERVICE_VIP}    # -Deureka.instance.ip-address=$DOCKER_IP
   client:
     registerWithEureka: true
