@@ -1,7 +1,6 @@
 package com.kdzido.thesis.config
 
 import groovyx.net.http.RESTClient
-import spock.lang.Ignore
 import spock.lang.Specification
 import spock.lang.Stepwise
 import spock.lang.Unroll
@@ -38,7 +37,7 @@ class ConfigServiceIntegSpec extends Specification {
                 def resp = eurekapeer1Client.get(path: "/eureka/apps")
                 resp.status == 200 &&
                     resp.headers.'Content-Type' == "application/json" &&
-                    resp.data.applications.application[0].name == "CONFIGSERVICE"
+                    resp.data.applications.application.any {it.name == "CONFIGSERVICE" }
             } catch (e) {
                 return false
             }
@@ -50,7 +49,7 @@ class ConfigServiceIntegSpec extends Specification {
                 def resp = eurekapeer2Client.get(path: "/eureka/apps")
                 resp.status == 200 &&
                         resp.headers.'Content-Type' == "application/json" &&
-                        resp.data.applications.application[0].name == "CONFIGSERVICE"
+                        resp.data.applications.application.any {it.name == "CONFIGSERVICE" }
             } catch (e) {
                 return false
             }
@@ -66,8 +65,10 @@ class ConfigServiceIntegSpec extends Specification {
                 resp.status == 200 &&
                     resp.data.name == "todoservice" &&
                     resp.data.profiles == ["$serviceProfile"] &&
-                    resp.data.propertySources[0].name == "https://github.com/kdzido/thesis-config/todoservice/todoservice.yml" &&
-                    resp.data.propertySources[0].source.'todo.property' == "This is a Git-backed test property for the todoservice"
+                    resp.data.propertySources.any {
+                        it.name == "https://github.com/kdzido/thesis-config/todoservice/todoservice.yml"  &&
+                                it.source.'todo.property' == "This is a Git-backed test property for the todoservice"
+                    }
             } catch (e) {
                 return false
             }
