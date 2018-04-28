@@ -41,8 +41,8 @@ services:
     environment:
        EUREKASERVICE_URI: "http://eurekapeer1:8761/eureka/,http://eurekapeer2:8761/eureka/"
        EUREKASERVICE_PORT: "8761"
-       SERVICE_HOSTNAME: "configservice"
        ENCRYPT_KEY: "COMMON_SYMMETRIC_KEY"
+#       SERVICE_HOSTNAME: "configservice"
     ports:
       - "8808:8888"
 
