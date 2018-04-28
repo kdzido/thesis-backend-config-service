@@ -12,9 +12,9 @@ spring:
 
 eureka:
   instance:
-    preferIpAddress: true
+#    preferIpAddress: true
     hostName: configservice
-#    hostname: configservice
+    hostname: configservice
 #    virtual-host-name: configservicev
   client:
     registerWithEureka: true
