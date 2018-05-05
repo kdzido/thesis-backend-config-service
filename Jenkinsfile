@@ -10,9 +10,6 @@ pipeline {
 
     environment {
         PIPELINE_BUILD_ID = "${GIT_BRANCH}-${BUILD_NUMBER}"
-        DOCKERHUB_CREDS = credentials("dockerhub")
-        // implicit DOCKERHUB_CREDS_USR
-        // implicit DOCKERHUB_CREDS_PSW
     }
 
     stages {
@@ -28,8 +25,6 @@ pipeline {
         stage('Staging') {
             steps {
                 withEnv(["COMPOSE_FILE=docker-compose-test.yml"]) {
-//                    sh 'docker-compose up -d eurekapeer1'
-//                    sh 'docker-compose up -d eurekapeer2'
                     sh 'docker-compose run --rm staging'
                 }
             }

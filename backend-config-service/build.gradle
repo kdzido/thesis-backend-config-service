@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '1.5.11.RELEASE'
+        springBootVersion = '1.5.12.RELEASE'
     }
     repositories {
         mavenCentral()
@@ -20,13 +20,12 @@ apply plugin: 'io.spring.dependency-management'
 apply plugin: 'com.bmuschko.docker-remote-api'
 
 import org.apache.tools.ant.filters.*
-import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 group 'pl.pja.13868.news'
-version '0.3.0'
+version '0.4.0'
 
 repositories {
     mavenLocal()
@@ -52,7 +51,7 @@ sourceSets {
 
 dependencyManagement {
     imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:Edgware.SR2"
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:Edgware.SR3"
     }
 }
 
@@ -71,10 +70,6 @@ dependencies {
     testCompile('org.springframework.boot:spring-boot-starter-test')
 
     integTestCompile sourceSets.main.output
-    integTestCompile "cglib:cglib-nodep:${cglibVersion}"
-    integTestCompile "org.codehaus.groovy:groovy-all:${groovyVersion}"
-    integTestCompile "org.spockframework:spock-core:${spockVersion}"
-    integTestCompile "io.rest-assured:rest-assured:${restAssuredVersion}"
     integTestCompile "org.awaitility:awaitility-groovy:${awaitilityVersion}"
 }
 

@@ -8,13 +8,11 @@ spring:
       server:
         git:
           uri: https://github.com/kdzido/thesis-config/
-          searchPaths: sampleservice,todoservice
+          searchPaths: sampleservice,todoservice,zuulservice
 
 eureka:
   instance:
     preferIpAddress: true
-#    hostName: ${SERVICE_HOSTNAME}
-#    ip-address: ${SERVICE_VIP}    # -Deureka.instance.ip-address=$DOCKER_IP
   client:
     registerWithEureka: true
     fetchRegistry: false

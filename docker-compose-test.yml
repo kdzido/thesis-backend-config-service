@@ -32,7 +32,6 @@ services:
     ports:
       - "7762:8761"
 
-
   configservice:
     image: thesis-configservice:snapshot
     depends_on:
@@ -42,7 +41,6 @@ services:
        EUREKASERVICE_URI: "http://eurekapeer1:8761/eureka/,http://eurekapeer2:8761/eureka/"
        EUREKASERVICE_PORT: "8761"
        ENCRYPT_KEY: "COMMON_SYMMETRIC_KEY"
-#       SERVICE_HOSTNAME: "configservice"
     ports:
       - "7888:8888"
 
