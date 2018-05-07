@@ -33,7 +33,7 @@ class ConfigServiceIntegSpec extends Specification {
 
     def "that config service is registered in Eureka peers"() {
         expect:
-        await().atMost(2, TimeUnit.MINUTES).until({
+        await().atMost(2, TimeUnit.MINUTES).pollInterval(1, TimeUnit.SECONDS).until({
             try {
                 def resp = eurekapeer1Client.get(path: "/eureka/apps")
                 resp.status == 200 &&
@@ -45,7 +45,7 @@ class ConfigServiceIntegSpec extends Specification {
         })
 
         and:
-        await().atMost(2, TimeUnit.MINUTES).until({
+        await().atMost(2, TimeUnit.MINUTES).pollInterval(1, TimeUnit.SECONDS).until({
             try {
                 def resp = eurekapeer2Client.get(path: "/eureka/apps")
                 resp.status == 200 &&
@@ -60,7 +60,7 @@ class ConfigServiceIntegSpec extends Specification {
     @Unroll
     def "that config service returns configuration of #serviceName / #serviceProfile"() { // readable fail
         expect:
-        await().atMost(2, TimeUnit.MINUTES).until({
+        await().atMost(3, TimeUnit.MINUTES).pollInterval(1, TimeUnit.SECONDS).until({
             try {
                 def resp = configServiceClient.get(path: "/$serviceName/$serviceProfile")
                 resp.status == 200 &&
